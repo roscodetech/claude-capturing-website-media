@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+.DS_Store
+Thumbs.db
+
+# Captured output folders
+*_website_media/
+*_website_media-*/
+
+# Local Claude Code settings (per-machine permissions)
+.claude/settings.local.json

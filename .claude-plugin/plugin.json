@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "claude-capturing-website-media",
+  "displayName": "Capturing Website Media",
+  "version": "0.1.0",
+  "description": "Given a URL, capture full-page PNGs, per-page scroll-animation WEBM clips, and an optional full-site tour video — Playwright-driven, no auth, one script.",
+  "author": {
+    "name": "Roscoe Kerby",
+    "email": "roscoe@roscodetech.com",
+    "url": "https://roscodetech.com"
+  },
+  "homepage": "https://github.com/roscodetech/claude-capturing-website-media",
+  "repository": "https://github.com/roscodetech/claude-capturing-website-media",
+  "license": "MIT",
+  "keywords": ["screenshots", "screen-recording", "playwright", "website", "marketing", "design-audit", "demo", "skill"]
+}
