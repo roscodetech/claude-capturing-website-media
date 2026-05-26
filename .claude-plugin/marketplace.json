@@ -13,7 +13,7 @@
   },
   "plugins": [
     {
-      "name": "capturing-website-media",
+      "name": "claude-capturing-website-media",
       "source": "./",
       "description": "Given a URL, capture full-page PNGs, per-page scroll-animation WEBM clips, and an optional full-site tour video. Playwright + headless Chromium, depth-controlled (landing page only, or auto-discovered main nav pages), no auth.",
       "category": "media"
