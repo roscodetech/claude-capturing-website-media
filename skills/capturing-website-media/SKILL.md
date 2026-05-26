@@ -28,17 +28,20 @@ Driven by Playwright (Python, Chromium). All capture options live in one script:
 ## Quick Reference
 
 ```bash
-# Landing page only — saves to ./roscodetech.com_website_media
+# Landing page only — saves to ./roscodetech.com_website_media-<timestamp>
 python capture_website.py https://roscodetech.com --depth 0
 
-# Pick the parent folder; creates ./Desktop/roscodetech.com_website_media inside it
+# Pick the parent folder; creates ./Desktop/roscodetech.com_website_media-<timestamp> inside it
 python capture_website.py https://roscodetech.com --depth 1 --into ~/Desktop
 
-# Fully explicit output path (overrides naming + --into)
+# Fully explicit output path (overrides naming + --into; no timestamp added)
 python capture_website.py https://roscodetech.com --depth 1 --output "D:/captures/run-A"
 
-# Replace an existing output dir instead of suffixing a timestamp
-python capture_website.py https://roscodetech.com --depth 1 --into ~/Desktop --overwrite
+# Drop the timestamp suffix (folder is just <host>_website_media)
+python capture_website.py https://roscodetech.com --depth 1 --no-timestamp
+
+# Replace an existing output dir
+python capture_website.py https://roscodetech.com --depth 1 --no-timestamp --overwrite
 
 # Skip the tour, just per-page assets
 python capture_website.py https://example.com --depth 1 --no-tour
@@ -47,14 +50,15 @@ python capture_website.py https://example.com --depth 1 --no-tour
 python capture_website.py https://example.com --depth 1 --headed
 ```
 
-**Default output folder:** `<host>_website_media` (e.g. `roscodetech.com_website_media`), created in the **current working directory** unless you pass `--into` or `--output`. If the target already exists and is non-empty, a `-<timestamp>` suffix is appended automatically (or pass `--overwrite` to replace it).
+**Default output folder:** `<host>_website_media-<timestamp>` (e.g. `roscodetech.com_website_media-2026-05-26T18-29-23`), created in the **current working directory** unless you pass `--into` or `--output`. The timestamp suffix guarantees every run is unique. Pass `--no-timestamp` to drop the suffix, or `--output PATH` for an exact, unstamped path.
 
 | Flag | Default | What it does |
 |------|---------|--------------|
 | `url` (positional) | — | URL to capture. Scheme added if missing. |
 | `--depth {0,1}` | `1` | `0` = landing only; `1` = landing + main nav pages |
 | `--into PARENT_DIR` | cwd | Parent directory; creates `<host>_website_media` inside it |
-| `--output PATH` | — | Full explicit output path (overrides `--into` and default naming) |
+| `--output PATH` | — | Full explicit output path (overrides `--into` and default naming; no timestamp added) |
+| `--no-timestamp` | off | Drop the `-<timestamp>` suffix from the default folder name |
 | `--overwrite` | off | Delete target dir first if it already exists and is non-empty |
 | `--screenshots-only` | off | Skip videos |
 | `--videos-only` | off | Skip screenshots |

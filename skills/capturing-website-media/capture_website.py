@@ -300,20 +300,29 @@ def derive_slug(index: int, url: str, title: str) -> str:
     return f"{index:02d}-{base or 'page'}"
 
 
-def resolve_output_dir(url: str, output: str | None, into: str | None) -> Path:
+def resolve_output_dir(
+    url: str,
+    output: str | None,
+    into: str | None,
+    timestamp: str,
+    no_timestamp: bool,
+) -> Path:
     """Determine where to write captures.
 
     Priority:
-      1. --output PATH        → use exactly as given
-      2. --into PARENT        → create <host>_website_media inside PARENT
-      3. neither              → create <host>_website_media in current working dir
+      1. --output PATH        → use exactly as given (no timestamp appended)
+      2. --into PARENT        → create <host>_website_media-<timestamp> inside PARENT
+      3. neither              → create <host>_website_media-<timestamp> in current working dir
 
-    The default folder name uses the URL's host so output is recognizable.
+    The default folder name uses the URL's host plus a timestamp so every run
+    is unique. Pass --no-timestamp to drop the suffix.
     """
     if output:
         return Path(output)
     host = urlparse(url).netloc or host_slug(url)
     folder_name = f"{host}_website_media"
+    if not no_timestamp:
+        folder_name = f"{folder_name}-{timestamp}"
     parent = Path(into).expanduser() if into else Path.cwd()
     return parent / folder_name
 
@@ -321,7 +330,7 @@ def resolve_output_dir(url: str, output: str | None, into: str | None) -> Path:
 def capture(args: argparse.Namespace) -> int:
     url = normalize_url(args.url)
     timestamp = datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
-    out_root = resolve_output_dir(url, args.output, args.into)
+    out_root = resolve_output_dir(url, args.output, args.into, timestamp, args.no_timestamp)
     if out_root.exists() and any(out_root.iterdir()):
         if args.overwrite:
             shutil.rmtree(out_root)
@@ -440,6 +449,8 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Full output path (overrides --into and the default name)")
     p.add_argument("--overwrite", action="store_true",
                    help="Delete the output dir first if it already exists and is non-empty")
+    p.add_argument("--no-timestamp", action="store_true",
+                   help="Drop the timestamp suffix from the default folder name")
     p.add_argument("--screenshots-only", action="store_true")
     p.add_argument("--videos-only", action="store_true")
     p.add_argument("--no-tour", action="store_true", help="Skip full-site tour video")
